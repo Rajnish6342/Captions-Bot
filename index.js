@@ -4,7 +4,7 @@ const axios = require("axios");
 const express = require("express");
 const app = express();
 const endpoints = require("./endpoints");
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 const opt = ['art', 'attitude', 'family', 'travel', 'beauty', 'books', 'birthday', 'startup', 'success'];
 
 
@@ -17,35 +17,44 @@ async function find(cat) {
         console.log(url);
         const response = await axios.get(url);
         const data = await response.data;
+        // console.log(data);
 
         return data;
     } catch (err) {
-        console.error(err);
+        console.log(err);
     }
 
 }
 
-bot.command('/start', ctx =>
-    ctx.reply(`Welcome To CaptionPlus Unofficial Bot Api. \n The Bot is currently in Dev Mode \n List of commands are \n /attitude  \n /art \n /family \n /success \n /startup \n /birthday \n /travel \n /books \n /beauty `)
-)
+
 
 
 
 bot.on('text', async ctx => {
 
     let cat = ctx.message.text.split('/')[1];
-    console.log(cat);
-
+    // console.log(cat);
+    if (cat === 'start') {
+        return ctx.reply(`Welcome To CaptionPlus Unofficial Bot Api. \n The Bot is currently in Dev Mode \n List of commands are \n /attitude  \n /art \n /family \n /success \n /startup \n /birthday \n /travel \n /books \n /beauty `)
+    }
     if (opt.includes(cat)) {
 
-        find(`${cat} `)
-            .then(data => {
+        find(`${cat}`)
+            .then(async data => {
+
                 let no = Math.floor(Math.random() * (data.total - 0)) + 0;
                 if (!data.total == 0) {
-                    ctx.reply(data.captions[no].caption)
+                    // console.log(ctx.getChat);
+                    await ctx.reply(data.captions[no].caption)
+                    // .then(msg => {
+                    //     // console.log(msg);
+                    // }).catch(err)
+                    // console.log(err);
+
                 } else {
-                    ctx.reply('Oops No Captions Found')
+                    await ctx.reply('Oops No Captions Found')
                 }
+
 
             });
 
@@ -56,6 +65,10 @@ bot.on('text', async ctx => {
 
 
 })
+bot.command('/start', ctx =>
+    ctx.reply(`Welcome To CaptionPlus Unofficial Bot Api. \n The Bot is currently in Dev Mode \n List of commands are \n /attitude  \n /art \n /family \n /success \n /startup \n /birthday \n /travel \n /books \n /beauty `)
+)
+
 bot.launch()
 app.use("/", endpoints);
 const server = app.listen(port, () => {
