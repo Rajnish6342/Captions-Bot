@@ -3,6 +3,7 @@ const Telegraf = require("telegraf");
 const axios = require("axios");
 const express = require("express");
 const app = express();
+const session = require('telegraf/session');
 const endpoints = require("./endpoints");
 const port = process.env.PORT || 3000;
 const opt = ['art', 'attitude', 'family', 'travel', 'beauty', 'books', 'birthday', 'startup', 'success'];
@@ -44,12 +45,12 @@ bot.on('text', async ctx => {
 
                 let no = Math.floor(Math.random() * (data.total - 0)) + 0;
                 if (!data.total == 0) {
-                    // console.log(ctx.getChat);
+
                     await ctx.reply(data.captions[no].caption)
                     // .then(msg => {
-                    //     // console.log(msg);
-                    // }).catch(err)
-                    // console.log(err);
+                    //     console.log(msg);
+                    // }).catch(err => console.log(err))
+
 
                 } else {
                     await ctx.reply('Oops No Captions Found')
