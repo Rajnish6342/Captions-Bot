@@ -1,8 +1,8 @@
 require("dotenv").config();
 const Telegraf = require("telegraf");
 const axios = require("axios");
-const express = require("express");
-const app = express();
+// const express = require("express");
+// const app = express();
 const session = require('telegraf/session');
 const endpoints = require("./endpoints");
 const port = process.env.PORT || 3000;
@@ -71,7 +71,7 @@ bot.command('/start', ctx =>
 )
 
 bot.launch()
-app.use("/", endpoints);
-const server = app.listen(port, () => {
-    console.log(`App running on port ${port}...`);
-});
+// app.use("/", endpoints);
+// const server = app.listen(port, () => {
+//     console.log(`App running on port ${port}...`);
+// });
